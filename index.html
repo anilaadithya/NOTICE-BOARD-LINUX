@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Department Notice Board</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">D</div>
+    <div>
+      <p class="eyebrow">DEPARTMENT PORTAL</p>
+      <h1>Notice Board</h1>
+    </div>
+    <span class="live-label"><span></span> LIVE</span>
+  </header>
+
+  <main class="container">
+    <section class="intro">
+      <div>
+        <p class="eyebrow">STAY INFORMED</p>
+        <h2>Department notices</h2>
+        <p class="muted">Announcements, updates and important dates in one place.</p>
+      </div>
+      <button class="primary-button" id="addButton">＋ Add notice</button>
+    </section>
+
+    <section class="toolbar">
+      <label class="search-box">
+        <span>⌕</span>
+        <input id="searchInput" type="search" placeholder="Search notices by title...">
+      </label>
+      <select id="categoryFilter" aria-label="Filter by category">
+        <option value="">All categories</option>
+        {% for category in categories %}
+        <option value="{{ category }}">{{ category }}</option>
+        {% endfor %}
+      </select>
+      <label class="active-toggle">
+        <input type="checkbox" id="activeOnly">
+        <span>Active only</span>
+      </label>
+    </section>
+
+    <section class="summary-row">
+      <p id="resultCount">Loading notices...</p>
+      <p class="muted">Newest notices appear first</p>
+    </section>
+
+    <section id="noticeList" class="notice-grid"></section>
+    <section id="emptyState" class="empty-state" hidden>
+      <div class="empty-icon">▤</div>
+      <h3>No notices found</h3>
+      <p>Try changing your search or add a new department notice.</p>
+      <button class="secondary-button" id="emptyAddButton">Add your first notice</button>
+    </section>
+  </main>
+
+  <dialog id="noticeDialog">
+    <form id="noticeForm">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">NOTICE DETAILS</p>
+          <h2 id="dialogTitle">Add notice</h2>
+        </div>
+        <button type="button" class="close-button" id="closeDialog" aria-label="Close">×</button>
+      </div>
+      <label>Notice title
+        <input id="titleInput" name="title" maxlength="180" required placeholder="Enter notice title">
+      </label>
+      <div class="form-row">
+        <label>Category
+          <select id="categoryInput" name="category" required>
+            <option value="">Select category</option>
+            {% for category in categories %}
+            <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>Date
+          <input id="dateInput" name="date" type="date" required>
+        </label>
+      </div>
+      <p id="formError" class="error-message" role="alert"></p>
+      <div class="dialog-actions">
+        <button type="button" class="secondary-button" id="cancelButton">Cancel</button>
+        <button type="submit" class="primary-button" id="saveButton">Save notice</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
